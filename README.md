@@ -200,21 +200,14 @@ npx prisma format
 
 ### Prisma ORM
 ```sql
-// prisma/schema.prisma
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
   extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
@@ -236,9 +229,9 @@ model Video {
   uri        String
   user_id    String
   user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  like       Like[]
+  likes      Like[]
   created_at DateTime   @default(now())
-  Comment    Comment[]
+  comments   Comment[]
 }
 
 model Like {
