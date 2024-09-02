@@ -1,5 +1,5 @@
 import React from 'react';
-import {  View, Text, Dimensions, TouchableOpacity, Share } from 'react-native';
+import {  View, Text, Dimensions, TouchableOpacity, Share, Image } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -86,7 +86,10 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
           <View> 
             <View>
               <TouchableOpacity onPress={() => router.push(`/user?user_id=${video.User.id}`)}>
-                <Ionicons name="person" size={40} color="white" />
+                <Image 
+                  source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${video.User?.id}/avatar.jpg` }} 
+                  className="w-12 h-12 rounded-full bg-black"
+                />
               </TouchableOpacity>
               {
                 following.filter((following: any) => following.follower_user_id === video.User.id).length > 0 ? (

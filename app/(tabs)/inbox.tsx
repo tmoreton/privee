@@ -68,10 +68,10 @@ export default function () {
             onPress={() => router.push(`/chat?chat_user_id=${item.id}`)}
             className='flex-row gap-2 items-center w-full m-1'
           >
-            <View className='flex-row justify-between w-full items-center pr-5'>
+            <View className='w-full flex-row justify-between items-center'>
               <View className='flex-row gap-2'>
                 <Image 
-                  source={{ uri: 'https://placehold.co/40x40' }} 
+                  source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${item?.id}/avatar.jpg` }} 
                   className="w-12 h-12 rounded-full bg-black"
                 />
                 <View>
@@ -79,8 +79,8 @@ export default function () {
                   <Text>Say hi</Text>
                 </View>
               </View>
-              <Ionicons name='chevron-forward' size={20} color='black' />
             </View>
+            <Ionicons name='chevron-forward' size={20} color='black' />
           </TouchableOpacity>
         )}
       />

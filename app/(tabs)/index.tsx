@@ -3,10 +3,12 @@ import { View, FlatList, Dimensions } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import VideoPlayer from '@/components/video';
 import Header from '@/components/header';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function () {
   const [videos, setVideos] = React.useState<any[]>([]);
   const [ activeIndex, setActiveIndex ] = React.useState<number | null>(null)
+  const isFocused = useIsFocused()
 
   React.useEffect(() => {
     getVideos()
@@ -31,6 +33,7 @@ export default function () {
       })
       setVideos(videosUrls)
   }
+
   return (
     <View className="flex-1 items-center justify-center bg-white">
       <View className="absolute top-16 left-0 right-0 z-10">
@@ -42,7 +45,7 @@ export default function () {
         snapToStart
         decelerationRate="fast"
         onViewableItemsChanged={e => setActiveIndex(e.viewableItems[0].key)}
-        renderItem={({ item }) => <VideoPlayer video={item} isViewable={activeIndex === item.id}/>} 
+        renderItem={({ item }) => <VideoPlayer video={item} isViewable={activeIndex === item.id && isFocused}/>} 
       />
     </View>
   );

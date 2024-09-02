@@ -27,7 +27,7 @@ export default function ({
               return (
                 <View className='flex-row gap-2 items-center w-full m-1'>
                   <Image 
-                    source={{ uri: 'https://placehold.co/40x40' }} 
+                    source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${item.User?.id}/avatar.jpg` }} 
                     className="w-10 h-10 rounded-full bg-black"
                   />
                   <View>
