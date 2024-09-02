@@ -1,12 +1,8 @@
 import { Text, View } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
+import Videos from '@/components/videos';
 
 export default function () {
   const { user } = useAuth();
-  return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-black font-bold text-3xl">Home</Text>
-      <Text>{JSON.stringify(user)}</Text>
-    </View>
-  );
+  return <Videos />
 }
