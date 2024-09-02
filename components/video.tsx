@@ -109,7 +109,7 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
                 <Ionicons name="heart-outline" size={40} color="white" />
               </TouchableOpacity>
             )}
-            <TouchableOpacity className="mt-6" onPress={() => router.push(`/comment?video_id=${video.id}`)}>
+            <TouchableOpacity className="mt-6" onPress={() => router.push(`/comment?video_id=${video.id}&video_user_id=${video.User.id}`)}>
               <Ionicons name="chatbubble-ellipses" size={40} color="white" />
             </TouchableOpacity>
             <TouchableOpacity className="mt-6" onPress={shareVideo}>
