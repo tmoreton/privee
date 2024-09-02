@@ -9,6 +9,10 @@ export const AuthContext = React.createContext({
   signOut: async () => {},
   likes: [],
   getLikes: async (userId: string) => {},
+  following: [],
+  getFollowing: async (userId: string) => {},
+  followers: [],
+  getFollowers: async (userId: string) => {},
 });
 
 export const useAuth = () => React.useContext(AuthContext)
@@ -17,6 +21,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = React.useState(null);
   const router = useRouter();
   const [likes, setLikes] = React.useState([]);
+  const [following, setFollowing] = React.useState([]);
+  const [followers, setFollowers] = React.useState([]);
 
   const getLikes = async (userId: string) => {
     if(!userId) return
@@ -25,12 +31,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLikes(data)
   }
 
+  const getFollowing = async (userId: string) => {
+    if(!userId) return
+
+    const { data, error } = await supabase.from('Follower').select('*').eq('user_id', userId);
+    if(!error) setFollowing(data)
+  }
+
+  const getFollowers = async (userId: string) => {
+    if(!userId) return
+
+    const { data, error } = await supabase.from('Follower').select('*').eq('follower_user_id', userId);
+    if(!error) setFollowers(data)
+  }
+
   const getUser = async (id: string) => {
     const { data, error } = await supabase.from('User').select('*').eq('id', id).single();
     if(error) return console.error(error);
 
     setUser(data);
     getLikes(data.id)
+    getFollowing(data.id)
+    getFollowers(data.id)
     router.push('/(tabs)');
   };
 
@@ -79,5 +101,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  return <AuthContext.Provider value={{ user, signIn, signUp, signOut, likes, getLikes }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ 
+    user, 
+    signIn, 
+    signUp, 
+    signOut, 
+    likes, 
+    getLikes, 
+    following, 
+    getFollowing, 
+    followers, 
+    getFollowers 
+  }}>
+    {children}
+  </AuthContext.Provider>
 }

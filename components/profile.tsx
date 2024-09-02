@@ -1,15 +1,23 @@
 import { Text, View, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 
-export default function () {
-  const { user, signOut, following, followers } = useAuth();
-
+export default function ({ 
+  user, 
+  following, 
+  followers, 
+}: { 
+  user: any, 
+  following: any, 
+  followers: any, signOut: any 
+}) {
+  const { user: authUser, signOut } = useAuth();
   const addProfilePicture = async () => {
     // const { data, error } = await supabase.storage.from('profile').upload(user?.id, {
     //   cacheControl: '3600',
     //   upsert: false
     // })
   }
+  
   return (
     <SafeAreaView className="flex-1 items-center">
       <TouchableOpacity onPress={addProfilePicture}>
@@ -33,9 +41,13 @@ export default function () {
           <Text className="text-md">1000</Text>
         </View>
       </View>
-      <TouchableOpacity className="bg-black px-4 py-2 rounded-lg m-3 w-full" onPress={signOut}>
-        <Text className="text-white font-bold text-lg">Sign Out</Text>
-      </TouchableOpacity>
+      { 
+        authUser?.id === user?.id && (
+          <TouchableOpacity className="bg-black px-4 py-2 rounded-lg m-3 w-full" onPress={signOut}>
+            <Text className="text-white font-bold text-lg">Sign Out</Text>
+          </TouchableOpacity>
+        )
+      }
     </SafeAreaView>
   );
 }
