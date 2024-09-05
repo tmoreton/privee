@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, FlatList} from 'react-native';
+import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/utils/supabase';
 import * as ImagePicker from 'expo-image-picker';
@@ -59,7 +59,6 @@ export default function ({
 
   const pickImage = async () => {
     if(authUser?.id !== user?.id) return;
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -119,16 +118,16 @@ export default function ({
       <Text className="text-2xl font-bold my-3 text-white">@{user?.username}</Text>
       <View className="flex-row items-center justify-around w-full my-3">
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold text-white">Following</Text>
-          <Text className="text-md text-white">{following.length}</Text>
+          <Text className="text-lg font-semibold text-white">Following</Text>
+          <Text className="text-base text-white pt-1">{following.length}</Text>
         </View>
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold text-white">Followers</Text>
-          <Text className="text-md text-white">{followers.length}</Text>
+          <Text className="text-lg font-semibold text-white">Followers</Text>
+          <Text className="text-base text-white pt-1">{followers.length}</Text>
         </View>
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold text-white">Likes</Text>
-          <Text className="text-md text-white">{likes.length}</Text>
+          <Text className="text-lg font-semibold text-white">Likes</Text>
+          <Text className="text-base text-white pt-1">{likes.length}</Text>
         </View>
       </View>
       { 
