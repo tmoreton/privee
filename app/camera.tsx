@@ -126,7 +126,7 @@ export default function App() {
       )
       :
       <CameraView mode="video" ref={cameraRef} style={{ flex: 1 }} facing={facing}>
-        <View className="absolute bottom-16 left-0 right-0">
+        <View className="absolute bottom-16 left-0 right-0 z-20">
           <View className="flex-row items-center justify-around">
             <TouchableOpacity className="items-end justify-end" onPress={pickImage}>
               <Ionicons name="aperture" size={50} color="white" />
