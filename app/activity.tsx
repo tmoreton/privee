@@ -35,20 +35,26 @@ export default function () {
   }
 
   return (
-    <SafeAreaView className="flex-1">
-      <Header title='Followers' goBack color='black' />
+    <SafeAreaView className="flex-1 bg-black">
+      <Header title='Activity' goBack color='white' />
       <FlatList
+        className='mt-6'
         data={activity}
         renderItem={({ item }) => (
-          <View className='flex-row gap-2 m-2'>
+          <View className='flex-row items-center my-2'>
             <Image 
               source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${item.User?.id}/avatar.jpg` }} 
-              className="w-12 h-12 rounded-full bg-black"
+              className="w-12 h-12 rounded-full bg-black m-2"
             />
             <View>
-              <Text className='font-bold text-base'>{item.User.username}</Text>
-              <Text>{item.text || 'Liked your video'}</Text>
-              <Text className='text-gray-500 text-xs'>{item.created_at}</Text>
+              <Text className='font-bold text-md text-white'>{item.User.username}</Text>
+              <Text className='text-white leading-7'>{item.text || 'Liked your video'}</Text>
+              <Text className='text-xs text-gray-400'>
+              { new Date(item?.created_at).toLocaleTimeString(undefined, {
+                hour: 'numeric',
+                minute: 'numeric',
+              })}
+              </Text>
             </View>
           </View>
         )}

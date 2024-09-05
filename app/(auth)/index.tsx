@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 
@@ -10,35 +10,41 @@ export default function () {
   const { signIn } = useAuth()
 
   return (
-    <View className="flex-1 items-center justify-center bg-white">
+    <SafeAreaView className="flex-1 bg-black">
       <View className="w-full p-4">
-        <Text className="text-black font-bold text-3xl text-center mb-4">Login</Text>
+        <Image
+          source={require('@/assets/images/icon.png')}
+          className="w-72 h-40 mx-auto"
+        />
         <TextInput
           placeholder="Email"
-          className="bg-white p-4 rounded-lg border border-gray-300 w-full mb-4"
+          placeholderTextColor="gray"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           secureTextEntry={true}
           placeholder="Password"
+          placeholderTextColor="gray"
           value={password}
           onChangeText={setPassword}
-          className="bg-white p-4 rounded-lg border border-gray-300 w-full mb-4"
+          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
         />
         <TouchableOpacity
-          className="bg-black px-4 py-2 rounded-lg"
+          className="bg-white px-4 py-2 rounded-lg my-4"
           onPress={() => signIn(email, password)}
         >
-          <Text className="text-white font-bold text-lg text-center">Login</Text>
-        
+          <Text className="text-black font-bold text-xl text-center">Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => router.push('/signup')}
         >
-          <Text className="text-black font-semibold text-lg text-center mt-3">Signup</Text>
+          <Text className="text-white font-semibold text-base text-center">Signup</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

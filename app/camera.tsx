@@ -28,9 +28,15 @@ export default function App() {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View className="flex-1 justify-center items-center">
-        <Text>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View className="flex-1 justify-center items-center bg-black">
+        <Text className="text-white font-bold text-xl text-center w-2/3">We need your permission to show the camera</Text>
+        <TouchableOpacity
+          className="flex-row items-center justify-center bg-white p-3 px-6 rounded-lg my-4"
+          onPress={requestPermission}
+        >
+          <Ionicons name="camera" size={24} color="black" />
+          <Text className="ml-3 text-black font-bold text-lg text-center">Access Camera</Text>
+        </TouchableOpacity>
       </View>
     );
   }

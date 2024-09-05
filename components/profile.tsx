@@ -4,6 +4,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/utils/supabase';
 import * as ImagePicker from 'expo-image-picker';
 import { Video, ResizeMode } from 'expo-av';
+import { useRouter } from 'expo-router';
 
 export default function ({ 
   user, 
@@ -19,6 +20,7 @@ export default function ({
   const [videos, setVideos] = React.useState<any[]>([]);
   const videoRef = React.useRef<Video>(null);
   const [likes, setLikes] = React.useState<any[]>([]);
+  const router = useRouter()
 
   React.useEffect(() => {
     getVideos()
@@ -31,7 +33,7 @@ export default function ({
       .select('*, User(*)')
       .eq('user_id', user?.id)
       .order('created_at', { ascending: false })
-      .limit(3)
+      .limit(1)
     getSignedUrls(data)
   }
 
@@ -107,26 +109,26 @@ export default function ({
   }
 
   return (
-    <SafeAreaView className="flex-1 items-center">
+    <SafeAreaView className="flex-1 items-center bg-black">
       <TouchableOpacity onPress={pickImage}>
         <Image 
           source={{ uri: profilePicture || `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${user?.id}/avatar.jpg` }} 
-          className="w-20 h-20 rounded-full bg-black my-3"
+          className="w-20 h-20 rounded-full bg-white my-3"
         />
       </TouchableOpacity>
-      <Text className="text-2xl font-bold my-3">@{user?.username}</Text>
+      <Text className="text-2xl font-bold my-3 text-white">@{user?.username}</Text>
       <View className="flex-row items-center justify-around w-full my-3">
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Following</Text>
-          <Text className="text-md">{following.length}</Text>
+          <Text className="text-md font-semibold text-white">Following</Text>
+          <Text className="text-md text-white">{following.length}</Text>
         </View>
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Followers</Text>
-          <Text className="text-md">{followers.length}</Text>
+          <Text className="text-md font-semibold text-white">Followers</Text>
+          <Text className="text-md text-white">{followers.length}</Text>
         </View>
         <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Likes</Text>
-          <Text className="text-md">{likes.length}</Text>
+          <Text className="text-md font-semibold text-white">Likes</Text>
+          <Text className="text-md text-white">{likes.length}</Text>
         </View>
       </View>
       { 
@@ -150,24 +152,20 @@ export default function ({
           </View>
         )
       }
-      <FlatList
-        numColumns={3}
-        data={videos}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        renderItem={({ item }) => 
-          <Video
-            ref={videoRef}
-            style={{ 
-              width: Dimensions.get('window').width*.333,
-              height: 225
-            }}
-            source={{ uri: item.signedUrl }}
-            resizeMode={ResizeMode.COVER}
-          />
-        } 
-
-      />
+      <TouchableOpacity className="pt-10" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
+        <Video
+          ref={videoRef}
+          style={{ 
+            flex: 1,
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+            borderRadius: 15,
+          }}
+          source={{ uri: videos[0]?.signedUrl }}
+          resizeMode={ResizeMode.COVER}
+          isLooping
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

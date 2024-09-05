@@ -24,8 +24,8 @@ export default function () {
   }
 
   return (
-    <SafeAreaView className="flex-1 items-center">
-      <Text className="text-black font-bold text-2xl text-center">Inbox</Text>
+    <SafeAreaView className="flex-1 items-center bg-black">
+      <Text className="text-white font-bold text-2xl text-center">Inbox</Text>
       <TouchableOpacity 
         onPress={() => router.push('/followers')}
         className='flex-row gap-2 items-center w-full m-1'
@@ -36,11 +36,11 @@ export default function () {
               <Ionicons name='people' size={30} color='white' />
             </View>
             <View>
-              <Text className='font-bold text-base'>New followers</Text>
-              <Text>Say hi</Text>
+              <Text className='font-bold text-base text-white'>New followers</Text>
+              <Text className='text-white'>Say hi</Text>
             </View>
           </View>
-          <Ionicons name='chevron-forward' size={20} color='black' />
+          <Ionicons name='chevron-forward' size={20} color='white' />
         </View>
       </TouchableOpacity>
       <TouchableOpacity 
@@ -53,11 +53,11 @@ export default function () {
               <Ionicons name='time' size={30} color='white' />
             </View>
             <View>
-              <Text className='font-bold text-base'>Activity</Text>
-              <Text>See what people are doing</Text>
+              <Text className='font-bold text-base text-white'>Activity</Text>
+              <Text className='text-white'>See what people are doing</Text>
             </View>
           </View>
-          <Ionicons name='chevron-forward' size={20} color='black' />
+          <Ionicons name='chevron-forward' size={20} color='white' />
         </View>
       </TouchableOpacity>
 

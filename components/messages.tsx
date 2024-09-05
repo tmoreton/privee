@@ -19,7 +19,7 @@ export default function ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 items-center justify-center bg-white">
+        <View className="flex-1 items-center justify-center bg-black">
           <FlatList 
             className='flex-1 w-full'
             data={messages}
@@ -31,8 +31,8 @@ export default function ({
                     className="w-10 h-10 rounded-full bg-black"
                   />
                   <View>
-                    <Text className='font-bold text-base'>{item.User.username}</Text>
-                    <Text>{item.text}</Text>
+                    <Text className='font-bold text-base text-white'>{item.User.username}</Text>
+                    <Text className='text-white'>{item.text}</Text>
                   </View>
                 </View>
               )
@@ -41,8 +41,9 @@ export default function ({
           />
           <View className='flex-row gap-2 w-full mx-3 mb-16'>
             <TextInput
-              className="flex-1 bg-white p-4 rounded-3xl border border-gray-300"
+              className="flex-1 bg-black p-4 rounded-full border border-gray-300 text-white text-base"
               placeholder="Add a comment"
+              placeholderTextColor="gray"
               onChangeText={(i) => setText(i)}
               value={text}
             />
