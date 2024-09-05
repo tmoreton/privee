@@ -68,19 +68,18 @@ export default function () {
             onPress={() => router.push(`/chat?chat_user_id=${item.id}`)}
             className='flex-row gap-2 items-center w-full m-1'
           >
-            <View className='w-full flex-row justify-between items-center'>
-              <View className='flex-row gap-2'>
+            <View className='flex-row justify-between items-center'>
+              <View className='flex-1 flex-row gap-2'>
                 <Image 
                   source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${item?.id}/avatar.jpg` }} 
                   className="w-12 h-12 rounded-full bg-black"
                 />
                 <View>
-                  <Text className='font-bold text-base'>{item.username}</Text>
-                  <Text>Say hi</Text>
+                  <Text className='font-bold text-base text-white'>{item.username}</Text>
+                  <Text className='text-white'>Say hi</Text>
                 </View>
               </View>
             </View>
-            <Ionicons name='chevron-forward' size={20} color='black' />
           </TouchableOpacity>
         )}
       />

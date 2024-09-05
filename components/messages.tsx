@@ -20,6 +20,7 @@ export default function ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex-1 items-center justify-center bg-black">
+          <Text className="text-white font-bold text-2xl">Chat</Text>
           <FlatList 
             className='flex-1 w-full'
             data={messages}
@@ -41,9 +42,9 @@ export default function ({
           />
           <View className='flex-row gap-2 w-full mx-3 mb-16'>
             <TextInput
-              className="flex-1 bg-black p-4 rounded-full border border-gray-300 text-white text-base"
+              className="flex-1 bg-gray-800 p-4 rounded-full text-white text-base"
               placeholder="Add a comment"
-              placeholderTextColor="gray"
+              placeholderTextColor="white"
               onChangeText={(i) => setText(i)}
               value={text}
             />
@@ -52,7 +53,7 @@ export default function ({
               Keyboard.dismiss()
               addMessage(text)
             }}>
-              <Ionicons name="arrow-forward-circle" size={50} color="red" />
+              <Ionicons name="arrow-forward-circle" size={60} color="white" />
             </TouchableOpacity>
             </View>
           </View>

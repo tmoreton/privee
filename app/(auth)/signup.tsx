@@ -24,14 +24,14 @@ export default function () {
         <TextInput
           placeholder="Username"
           placeholderTextColor="gray"
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base"
+          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
           value={username}
           onChangeText={setUsername}
         />
         <TextInput
           placeholder="Email"
           placeholderTextColor="gray"
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base"
+          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
           value={email}
           onChangeText={setEmail}
         />
@@ -41,7 +41,7 @@ export default function () {
           placeholderTextColor="gray"
           value={password}
           onChangeText={setPassword}
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base"
+          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
         />
         <TouchableOpacity
           className="bg-white px-4 py-2 rounded-lg my-4"

@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 9.0.1"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "branch": "main",
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://tircduvepuxvjdnuskeo.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpcmNkdXZlcHV4dmpkbnVza2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjUyMTcxNDIsImV4cCI6MjA0MDc5MzE0Mn0.IOeaEQ49QLaei48Buy1ErAhHMWLxmOLbl3tC2UBxOUA",
+        "EXPO_PUBLIC__BUCKET": "https://tircduvepuxvjdnuskeo.supabase.co/storage/v1/object/public"
+       
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

@@ -8,6 +8,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { Video, ResizeMode } from 'expo-av';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -19,6 +20,11 @@ export default function App() {
   const { user } = useAuth();
   const router = useRouter();
   const [status, setStatus] = useState({ isLoaded: false, isPlaying: false });
+  const isFocused = useIsFocused()
+
+  React.useEffect(() => {
+    if(!isFocused) setVideoUri(null);
+  }, [isFocused])
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -83,14 +89,14 @@ export default function App() {
   }
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.1,
     });
-    setVideoUri(result.assets[0].uri);
+    if(!result?.assets) return setVideoUri(null);
+    setVideoUri(result?.assets?.[0]?.uri);
   };
 
   return (
@@ -120,8 +126,8 @@ export default function App() {
       )
       :
       <CameraView mode="video" ref={cameraRef} style={{ flex: 1 }} facing={facing}>
-        <View className="flex-1 justify-end">
-          <View className="flex-row items-center justify-around mb-10">
+        <View className="absolute bottom-16 left-0 right-0">
+          <View className="flex-row items-center justify-around">
             <TouchableOpacity className="items-end justify-end" onPress={pickImage}>
               <Ionicons name="aperture" size={50} color="white" />
             </TouchableOpacity>

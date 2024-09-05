@@ -20,14 +20,14 @@ export default function () {
       <Header title="Search" color="white" />
       <View className='flex-row gap-2 mt-5 mx-2'>
         <TextInput
-          className="flex-1 text-white p-4 rounded-full border border-gray-300 bg-black"
+          className="flex-1 text-white p-4 rounded-full bg-gray-800"
           placeholder="Search"
           placeholderTextColor='white'
           onChangeText={setText}
           value={text}
         />
         <TouchableOpacity onPress={search}>
-          <Ionicons name="arrow-forward-circle" size={50} color="#ff6666" />
+          <Ionicons name="arrow-forward-circle" size={60} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList
@@ -36,8 +36,8 @@ export default function () {
           <TouchableOpacity onPress={() => router.push(`/user?user_id=${user.id}`)}>
             <View className='flex-row gap-2 items-center w-full m-3'>
               <Image 
-                source={{ uri: 'https://placehold.co/40x40' }} 
-              className="w-10 h-10 rounded-full bg-white"
+                source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${user.id}/avatar.jpg` || 'https://placehold.co/40x40' }} 
+                className="w-10 h-10 rounded-full bg-white"
             />
               <Text className='font-bold text-base text-white'>{user?.username}</Text>
             </View>

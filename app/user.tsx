@@ -36,8 +36,8 @@ export default function () {
   }, [params.user_id]);
 
   return (
-    <SafeAreaView className="flex-1">
-      <Header title={user?.username} color="black" goBack />
+    <SafeAreaView className="flex-1 bg-black">
+      <Header title={user?.username} color="white" goBack />
       <Profile 
         user={user}
         following={following}
