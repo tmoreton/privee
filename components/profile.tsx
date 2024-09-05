@@ -132,7 +132,7 @@ export default function ({
       </View>
       { 
         authUser?.id === user?.id ? (
-          <TouchableOpacity className="bg-black px-4 py-2 rounded-lg m-3" onPress={signOut}>
+          <TouchableOpacity className="bg-zinc-800 px-4 py-2 rounded-lg m-3" onPress={signOut}>
             <Text className="text-white font-bold text-lg text-center">Sign Out</Text>
           </TouchableOpacity>
         ) : (

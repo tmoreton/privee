@@ -20,7 +20,7 @@ export default function () {
       <Header title="Search" color="white" />
       <View className='flex-row gap-2 mt-5 mx-2'>
         <TextInput
-          className="flex-1 text-white p-4 rounded-full bg-gray-800"
+          className="flex-1 text-white p-4 rounded-xl bg-zinc-800"
           placeholder="Search"
           placeholderTextColor='white'
           onChangeText={setText}

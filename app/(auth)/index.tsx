@@ -21,7 +21,7 @@ export default function () {
           placeholderTextColor="gray"
           keyboardType="email-address"
           autoCapitalize="none"
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
+          className="bg-zinc-800 p-4 rounded-xl w-full mb-4 text-base text-white"
           value={email}
           onChangeText={setEmail}
         />
@@ -31,7 +31,7 @@ export default function () {
           placeholderTextColor="gray"
           value={password}
           onChangeText={setPassword}
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
+          className="bg-zinc-800 p-4 rounded-xl w-full mb-4 text-base text-white"
         />
         <TouchableOpacity
           className="bg-white px-4 py-2 rounded-lg my-4"

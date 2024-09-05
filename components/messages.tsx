@@ -42,7 +42,7 @@ export default function ({
           />
           <View className='flex-row gap-2 w-full mx-3 mb-16'>
             <TextInput
-              className="flex-1 bg-gray-800 p-4 rounded-full text-white text-base"
+              className="flex-1 bg-zinc-800 p-4 rounded-xl text-white text-base"
               placeholder="Add a comment"
               placeholderTextColor="white"
               onChangeText={(i) => setText(i)}

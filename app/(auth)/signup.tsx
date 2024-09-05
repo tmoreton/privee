@@ -20,18 +20,18 @@ export default function () {
             <Feather name="x" size={32} color="white" />
           </TouchableOpacity>
         </View>
-        <Text className="text-white font-bold text-5xl text-center my-5">Signup</Text>
+        <Text className="text-white font-bold text-4xl text-center my-5">Signup</Text>
         <TextInput
           placeholder="Username"
           placeholderTextColor="gray"
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
+          className="bg-zinc-800 p-4 rounded-xl w-full mb-4 text-base text-white"
           value={username}
           onChangeText={setUsername}
         />
         <TextInput
           placeholder="Email"
           placeholderTextColor="gray"
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
+          className="bg-zinc-800 p-4 rounded-xl w-full mb-4 text-base text-white"
           value={email}
           onChangeText={setEmail}
         />
@@ -41,7 +41,7 @@ export default function () {
           placeholderTextColor="gray"
           value={password}
           onChangeText={setPassword}
-          className="bg-black p-4 rounded-lg border border-gray-500 w-full mb-4 text-base text-white"
+          className="bg-zinc-800 p-4 rounded-xl w-full mb-4 text-base text-white"
         />
         <TouchableOpacity
           className="bg-white px-4 py-2 rounded-lg my-4"
