@@ -50,12 +50,6 @@ export default function App() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
-  React.useEffect(() => {
-    if(videoUri) {
-      videoRef.current?.playAsync()
-    }
-  }, [videoUri])
-
   const recordVideo = async () => {
     if (isRecording) {
       setIsRecording(false);
@@ -63,7 +57,8 @@ export default function App() {
     } else {
       setIsRecording(true);
       const video = await cameraRef.current?.recordAsync();
-      setVideoUri(video?.uri);
+      setVideoUri(video.uri);
+      videoRef.current?.playAsync()
     }
   }
 
@@ -75,6 +70,7 @@ export default function App() {
       type: `video/${fileName?.split('.').pop()}`,
       name: fileName
     });
+
     router.back();
     const { data, error } = await supabase.storage
       .from(`videos/${user?.id}`)
@@ -101,6 +97,7 @@ export default function App() {
     });
     if(!result?.assets) return setVideoUri(null);
     setVideoUri(result?.assets?.[0]?.uri);
+    videoRef.current?.playAsync()
   };
 
   return (
@@ -110,7 +107,7 @@ export default function App() {
           <TouchableOpacity className="absolute bottom-10 left-36 z-10" onPress={saveVideo}>
             <Ionicons name="checkmark-circle" size={100} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-1" onPress={() => status.isPlaying ? videoRef.current.pauseAsync() : videoRef.current.playAsync()}>
+          <TouchableOpacity className="flex-1" onPress={() => status.isPlaying ? videoRef.current?.pauseAsync() : videoRef.current?.playAsync()}>
             <Video
               ref={videoRef}
               style={{ 

@@ -119,7 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
     setUser(null);
     router.back()
-    router.push('/(auth)');
+    router.replace('/(auth)');
   };
 
   const deleteAccount = async () => {
