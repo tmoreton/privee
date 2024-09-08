@@ -15,7 +15,6 @@ export default function () {
     people.sort((a, b) => {
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
-    console.log(people)
     setPeople(people);
   }
 
@@ -27,9 +26,12 @@ export default function () {
     <SafeAreaView className="flex-1 bg-black">
       <Header title='Followers' goBack color='white' />
       <FlatList
+        className='mt-5'
         data={people}
-        renderItem={({ item }) => (
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
           <TouchableOpacity 
+            key={index}
             onPress={() => router.push(`/user?user_id=${item.following?.id || item.follower?.id}`)}
             className='flex-row items-center w-full m-2'
           >

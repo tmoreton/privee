@@ -11,15 +11,23 @@ export default function () {
   const params = useLocalSearchParams();
   const router = useRouter()
 
+  React.useEffect(() => {
+    getUser();
+  }, [params.user_id]);
+
   const getUser = async () => {
     const { data, error } = await supabase.from('User').select('*').eq('id', params.user_id).single();
     if(error) return console.error(error);
     setUser(data);
   }
 
-  React.useEffect(() => {
-    getUser();
-  }, [params.user_id]);
+  const report = async () => {
+    const { error } = await supabase.from('Report').insert({
+      user_id: user?.id,
+    })
+    if(error) return console.error(error);
+    Alert.alert('Reported', 'The user has been reported to the moderators');
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-black">
@@ -34,9 +42,7 @@ export default function () {
           <TouchableOpacity onPress={() => {
             Alert.alert('Report', 'Are you sure you want to report this user?', [
               { text: 'Cancel', style: 'cancel' },
-              { text: 'Report', onPress: () => {
-                console.log('Reported')
-              } }
+              { text: 'Report', onPress: report }
             ])
           }}>
             <Ionicons name="flag" size={26} color="white" />

@@ -4,9 +4,18 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
 import { AuthProvider } from '@/providers/AuthProvider';
+import * as Notifications from 'expo-notifications';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -39,6 +48,7 @@ export default function RootLayout() {
         <Stack.Screen name="comment" options={{ headerShown: false, presentation: 'modal' }} />
         <Stack.Screen name="camera" options={{ headerShown: false, presentation: 'modal' }} />
         <Stack.Screen name="view" options={{ headerShown: false, presentation: 'modal' }} />
+        <Stack.Screen name="settings" options={{ headerShown: false, presentation: 'modal' }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </AuthProvider>

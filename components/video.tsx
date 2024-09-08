@@ -1,16 +1,18 @@
 import React from 'react';
 import {  View, Text, Dimensions, TouchableOpacity, Share, Image, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter, usePathname } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/utils/supabase';
 import { LinearGradient } from 'expo-linear-gradient';
+import sendNotification from '@/hooks/send-notification';
 
 export default function ({ video, isViewable }: { video: any, isViewable: boolean }) {
   const { user, likes, getLikes, following, getFollowing } = useAuth();
   const videoRef = React.useRef<Video>(null);
   const router = useRouter();
+  const path = usePathname();
 
   React.useEffect(() => {
     if (isViewable) {
@@ -34,7 +36,10 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
         video_id: video.id,
         video_user_id: video.User.id
       })
-    if(!error) getLikes(user?.id)
+    if(!error) {
+      getLikes(user?.id)
+      if(video.User?.token) sendNotification(video.User.token, 'New Like', `${user?.username} liked your video`)
+    }
   }
 
   const unLikeVideo = async () => {
@@ -47,13 +52,18 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
   }
 
   const followerUser = async () => {
+    if(user?.id === video.User.id) return;
+    
     const { error } = await supabase
       .from('Follower')
       .insert({
         user_id: user?.id,
         follower_user_id: video.User.id
       })
-    if(!error) getFollowing(user?.id)
+    if(!error) {
+      getFollowing(user?.id)
+      if(video.User?.token) sendNotification(video.User.token, 'New Follower', `${user?.username} started following you`)
+    }
   }
 
   const unFollowerUser = async () => {
@@ -84,7 +94,6 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
     if(!error) router.back()
   }
 
-  const isOwner = video.User.id === user?.id
   return (
     <View>
       <Video
@@ -109,7 +118,7 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
             height: 400,
           }}
         />
-        { isOwner && <LinearGradient
+        { path === '/profile' && <LinearGradient
           colors={['transparent', '#000']}
           style={{
             position: 'absolute',
@@ -120,7 +129,7 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
           }}
         /> }
         <View className="flex-1 justify-between">
-          <View className={`flex-row items-center justify-between mt-14 mx-4 ${isOwner ? 'mt-0' : 'mt-14'}`}>
+          <View className={`flex-row items-center justify-between mt-14 mx-4 ${path === '/profile' ? 'mt-0' : 'mt-14'}`}>
             <TouchableOpacity onPress={() => router.push(`/comment?video_id=${video.id}&video_user_id=${video.User.id}`)}>
               <Ionicons name="chatbubble-ellipses" size={40} color="white" />
             </TouchableOpacity>
@@ -161,7 +170,7 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
             </View>
           </View>
           {
-            isOwner && 
+            path === '/profile' && 
             <View className="flex-row items-center justify-end mx-6">
               <TouchableOpacity onPress={createAlert}>
                 <Ionicons name="settings" size={40} color="white" />

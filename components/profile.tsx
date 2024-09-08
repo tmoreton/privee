@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Video, ResizeMode } from 'expo-av';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import sendNotification from '@/hooks/send-notification';
 
 export default function ({ 
   user, 
@@ -76,13 +77,18 @@ export default function ({
   }
 
   const followerUser = async () => {
+    if(authUser?.id === user?.id) return;
+
     const { error } = await supabase
       .from('Follower')
       .insert({
         user_id: authUser?.id,
         follower_user_id: user?.id
       })
-    if(!error) getFollowing(authUser?.id)
+    if(!error) {
+      getFollowing(authUser?.id)
+      if(user?.token) sendNotification(user.token, 'New Follower', `${authUser?.username} started following you`)
+    }
   }
 
   const unFollowerUser = async () => {
@@ -115,25 +121,27 @@ export default function ({
         )
       }
       </View>
-      <TouchableOpacity className="pt-10 flex-1 items-center justify-center" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
-        <Video
-          ref={videoRef}
-          style={{ 
-            flex: 1,
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
-            borderRadius: 15,
-          }}
-          source={{ uri: videos[0]?.signedUrl }}
-          resizeMode={ResizeMode.COVER}
-          isLooping
-        />
-        <View className="absolute items-center justify-center bg-black/50 w-full h-full">
-          <View className="bg-black py-3 px-6 rounded-lg">
-            <Text className="text-white text-xl font-bold">View More</Text>
+      { videos?.length > 0 && (
+        <TouchableOpacity className="pt-10 flex-1 items-center justify-center" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
+          <Video
+            ref={videoRef}
+            style={{ 
+              flex: 1,
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              borderRadius: 15,
+            }}
+            source={{ uri: videos[0]?.signedUrl }}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+          />
+          <View className="absolute items-center justify-center bg-black/50 w-full h-full">
+            <View className="bg-black py-3 px-6 rounded-lg">
+              <Text className="text-white text-xl font-bold">View More</Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

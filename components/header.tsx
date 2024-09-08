@@ -9,11 +9,13 @@ export default function Header({
   color, 
   goBack = false, 
   search = false,
+  settings = false,
 }: { 
   title: string, 
   color: string, 
   goBack?: boolean, 
   search?: boolean,
+  settings?: boolean,
 }) {
   const router = useRouter()
   return (
@@ -30,6 +32,11 @@ export default function Header({
         {search && (
           <TouchableOpacity onPress={() => router.push('/search')}>
             <Ionicons name="search" size={28} color={color} />
+          </TouchableOpacity>
+        )}
+        { settings && (
+          <TouchableOpacity onPress={() => router.push('/settings')}>
+            <Ionicons name="settings" size={28} color={color} />
           </TouchableOpacity>
         )}
       </View>

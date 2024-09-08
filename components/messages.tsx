@@ -1,19 +1,26 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, TouchableOpacity, FlatList, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
-import { useAuth } from '@/providers/AuthProvider';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { supabase } from '@/utils/supabase';
 
 export default function ({
   messages,
-  addMessage
+  addMessage,
+  video_id
 }: {
   messages: any[],
-  addMessage: (message: any) => void
+  addMessage: (message: any) => void,
+  video_id?: string
 }) {
   const [text, setText] = React.useState<string>('');
-  const { user } = useAuth();
   const router = useRouter()
+
+  const report = async () => {
+    const { error } = await supabase.from('Report').insert({ video_id })
+    if(error) return console.error(error);
+    Alert.alert('Reported', 'This video has been reported to the moderators');
+  }
 
   return (
     <KeyboardAvoidingView 
@@ -27,9 +34,7 @@ export default function ({
               <TouchableOpacity onPress={() => {
                 Alert.alert('Report', 'Are you sure you want to report this content?', [
                   { text: 'Cancel', style: 'cancel' },
-                  { text: 'Report', onPress: () => {
-                    console.log('Reported')
-                  } }
+                  { text: 'Report', onPress: report }
                 ])
               }}>
                 <Ionicons name="flag" size={26} color="white" />

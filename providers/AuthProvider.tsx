@@ -68,7 +68,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .eq('follower_user_id', userId)
       .order('created_at', { ascending: false })
       .limit(10)
-    console.log(data)
     if(!error) setFollowers(data)
   }
 
