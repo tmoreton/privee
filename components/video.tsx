@@ -1,5 +1,5 @@
 import React from 'react';
-import {  View, Text, Dimensions, TouchableOpacity, Share, Image, SafeAreaView } from 'react-native';
+import {  View, Text, Dimensions, TouchableOpacity, Share, Image, Alert } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -65,6 +65,26 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
     if(!error) getFollowing(user?.id)
   }
 
+  const createAlert = () => {
+    Alert.alert('Delete Video', 'Are you sure you want to delete this video?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: deleteVideo},
+    ]);
+  }
+
+  const deleteVideo = async () => {      
+    const { error } = await supabase
+      .from('Video')
+      .delete()
+      .eq('id', video.id)
+    if(!error) router.back()
+  }
+
+  const isOwner = video.User.id === user?.id
   return (
     <View>
       <Video
@@ -89,8 +109,18 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
             height: 400,
           }}
         />
+        { isOwner && <LinearGradient
+          colors={['transparent', '#000']}
+          style={{
+            position: 'absolute',
+            bottom: -125,
+            left: 0,
+            right: 0,
+            height: 400,
+          }}
+        /> }
         <View className="flex-1 justify-between">
-          <View className="flex-row items-center justify-between mt-14 mx-4">
+          <View className={`flex-row items-center justify-between mt-14 mx-4 ${isOwner ? 'mt-0' : 'mt-14'}`}>
             <TouchableOpacity onPress={() => router.push(`/comment?video_id=${video.id}&video_user_id=${video.User.id}`)}>
               <Ionicons name="chatbubble-ellipses" size={40} color="white" />
             </TouchableOpacity>
@@ -114,7 +144,9 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
                   )
                 }
               </View>
-              <Text className="text-white text-2xl font-bold ml-3">{video.User.username}</Text>
+              <TouchableOpacity onPress={() => router.push(`/user?user_id=${video.User.id}`)}>
+                <Text className="text-white text-2xl font-bold ml-3">{video.User.username}</Text>
+              </TouchableOpacity>
             </View>
             <View>
               {likes.filter((like: any) => like.video_id === video.id).length > 0 ? (
@@ -128,6 +160,14 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
               )}
             </View>
           </View>
+          {
+            isOwner && 
+            <View className="flex-row items-center justify-end mx-6">
+              <TouchableOpacity onPress={createAlert}>
+                <Ionicons name="settings" size={40} color="white" />
+              </TouchableOpacity>
+            </View>
+          }
         </View>
       </View>
     </View>

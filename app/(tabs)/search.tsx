@@ -23,6 +23,7 @@ export default function () {
           className="flex-1 text-white p-4 rounded-xl bg-zinc-800"
           placeholder="Search"
           placeholderTextColor='white'
+          autoCapitalize='none'
           onChangeText={setText}
           value={text}
         />

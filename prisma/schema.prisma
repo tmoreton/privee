@@ -16,7 +16,8 @@ model User {
   created_at DateTime   @default(now())
   videos     Video[]
   likes      Like[]
-  followers  Follower[]
+  followers  Follower[] @relation("UserFollowers")
+  following  Follower[] @relation("UserFollowing")
   comments   Comment[]
   chats      Chat[]
 }
@@ -45,8 +46,9 @@ model Like {
 model Follower {
   id               String   @id @default(dbgenerated("uuid_generate_v4()"))
   user_id          String
-  user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user             User     @relation("UserFollowing", fields: [user_id], references: [id], onDelete: Cascade)
   follower_user_id String
+  follower         User     @relation("UserFollowers", fields: [follower_user_id], references: [id], onDelete: Cascade)
   created_at       DateTime @default(now())
 }
 

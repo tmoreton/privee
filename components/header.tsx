@@ -1,6 +1,8 @@
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function Header({ 
   title, 
@@ -23,7 +25,7 @@ export default function Header({
           </TouchableOpacity>
         )}
       </View>
-      <Text className={`text-${color} font-bold text-2xl`}>{title}</Text>
+      <Text className={`text-${color} font-bold text-2xl flex-1 text-center`}>{title}</Text>
       <View className="w-10">
         {search && (
           <TouchableOpacity onPress={() => router.push('/search')}>

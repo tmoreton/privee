@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, FlatList, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
+import { Alert, Text, View, TextInput, TouchableOpacity, FlatList, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function ({
   messages,
@@ -12,6 +13,7 @@ export default function ({
 }) {
   const [text, setText] = React.useState<string>('');
   const { user } = useAuth();
+  const router = useRouter()
 
   return (
     <KeyboardAvoidingView 
@@ -20,7 +22,26 @@ export default function ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex-1 items-center justify-center bg-black">
-          <Text className="text-white font-bold text-2xl">Chat</Text>
+          <View className="flex-row items-center justify-between mx-3">
+            <View className="w-10">
+              <TouchableOpacity onPress={() => {
+                Alert.alert('Report', 'Are you sure you want to report this content?', [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Report', onPress: () => {
+                    console.log('Reported')
+                  } }
+                ])
+              }}>
+                <Ionicons name="flag" size={26} color="white" />
+              </TouchableOpacity>
+            </View>
+            <Text className="text-white font-bold text-2xl flex-1 text-center">Messages</Text>
+            <View className="w-10">
+              <TouchableOpacity onPress={() => router.back()}>
+                <FontAwesome name="remove" size={32} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
           <FlatList 
             className='flex-1 w-full'
             data={messages}

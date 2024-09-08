@@ -5,8 +5,8 @@ import { useAuth } from '@/providers/AuthProvider';
 
 export default function () {
   const router= useRouter();
-  const [email, setEmail] = React.useState('hello@reactnativenerd.com');
-  const [password, setPassword] = React.useState('1234567890');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const { signIn } = useAuth()
 
   return (
