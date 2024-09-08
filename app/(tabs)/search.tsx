@@ -10,35 +10,46 @@ export default function () {
   const [ results, setResults ] = React.useState([])
   const router = useRouter()
 
+  React.useEffect(() => {
+    getRecent()
+  }, [])
+
+  const getRecent = async () => {
+    const { data, error } = await supabase.from('User').select('*').order('created_at', { ascending: false }).limit(10)
+    setResults(data)
+  }
+
   const search = async () => {
     const { data, error } = await supabase.from('User').select('*').eq('username', text)
     setResults(data)
   }
 
   return (
-    <SafeAreaView>
-      <Header title="Search" color="black" goBack />
+    <SafeAreaView className='flex-1 bg-black'>
+      <Header title="Search" color="white" />
       <View className='flex-row gap-2 mt-5 mx-2'>
         <TextInput
-          className="flex-1 bg-white p-4 rounded-3xl border border-gray-300"
+          className="flex-1 text-white p-4 mb-3 rounded-xl bg-zinc-800"
           placeholder="Search"
-          onChangeText={(i) => setText(i)}
+          placeholderTextColor='white'
+          autoCapitalize='none'
+          onChangeText={setText}
           value={text}
         />
         <TouchableOpacity onPress={search}>
-          <Ionicons name="arrow-forward-circle" size={50} color="red" />
+          <Ionicons name="arrow-forward-circle" size={60} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList
         data={results}
         renderItem={({ item: user }) => 
           <TouchableOpacity onPress={() => router.push(`/user?user_id=${user.id}`)}>
-            <View className='flex-row gap-2 items-center w-full m-3'>
+            <View className='flex-row gap-2 items-center w-full m-2'>
               <Image 
-                source={{ uri: 'https://placehold.co/40x40' }} 
-              className="w-10 h-10 rounded-full bg-black"
+                source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${user.id}/avatar.jpg` || 'https://placehold.co/40x40' }} 
+                className="w-10 h-10 rounded-full bg-white"
             />
-              <Text className='font-bold text-base'>{user?.username}</Text>
+              <Text className='font-bold text-base text-white'>{user?.username}</Text>
             </View>
           </TouchableOpacity>
         }

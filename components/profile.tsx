@@ -1,28 +1,26 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, SafeAreaView, Dimensions, FlatList} from 'react-native';
+import { Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/utils/supabase';
 import * as ImagePicker from 'expo-image-picker';
 import { Video, ResizeMode } from 'expo-av';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import sendNotification from '@/hooks/send-notification';
 
 export default function ({ 
   user, 
-  following, 
-  followers, 
 }: { 
   user: any, 
-  following: any, 
-  followers: any, signOut: any 
 }) {
-  const { user: authUser, signOut, following: myFollowing, getFollowing } = useAuth();
+  const { user: authUser, following: myFollowing, getFollowing } = useAuth();
   const [profilePicture, setProfilePicture] = React.useState<string>('');
   const [videos, setVideos] = React.useState<any[]>([]);
   const videoRef = React.useRef<Video>(null);
-  const [likes, setLikes] = React.useState<any[]>([]);
+  const router = useRouter()
 
   React.useEffect(() => {
     getVideos()
-    getLikes()
   }, [user])
 
   const getVideos = async () => {
@@ -31,16 +29,8 @@ export default function ({
       .select('*, User(*)')
       .eq('user_id', user?.id)
       .order('created_at', { ascending: false })
-      .limit(3)
+      .limit(1)
     getSignedUrls(data)
-  }
-
-  const getLikes = async () => {
-    const { data, error } = await supabase
-      .from('Like')
-      .select('*')
-      .eq('video_user_id', user?.id)
-    setLikes(data)
   }
 
   const getSignedUrls = async (videos: any[]) => {
@@ -57,7 +47,6 @@ export default function ({
 
   const pickImage = async () => {
     if(authUser?.id !== user?.id) return;
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -88,13 +77,18 @@ export default function ({
   }
 
   const followerUser = async () => {
+    if(authUser?.id === user?.id) return;
+
     const { error } = await supabase
       .from('Follower')
       .insert({
         user_id: authUser?.id,
         follower_user_id: user?.id
       })
-    if(!error) getFollowing(authUser?.id)
+    if(!error) {
+      getFollowing(authUser?.id)
+      if(user?.token) sendNotification(user.token, 'New Follower', `${authUser?.username} started following you`)
+    }
   }
 
   const unFollowerUser = async () => {
@@ -107,67 +101,47 @@ export default function ({
   }
 
   return (
-    <SafeAreaView className="flex-1 items-center">
+    <View className="flex-1 items-center bg-black">
       <TouchableOpacity onPress={pickImage}>
         <Image 
           source={{ uri: profilePicture || `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${user?.id}/avatar.jpg` }} 
-          className="w-20 h-20 rounded-full bg-black my-3"
+          className="w-24 h-24 rounded-full bg-white my-3"
         />
       </TouchableOpacity>
-      <Text className="text-2xl font-bold my-3">@{user?.username}</Text>
-      <View className="flex-row items-center justify-around w-full my-3">
-        <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Following</Text>
-          <Text className="text-md">{following.length}</Text>
-        </View>
-        <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Followers</Text>
-          <Text className="text-md">{followers.length}</Text>
-        </View>
-        <View className="w-1/3 items-center">
-          <Text className="text-md font-semibold">Likes</Text>
-          <Text className="text-md">{likes.length}</Text>
-        </View>
-      </View>
-      { 
-        authUser?.id === user?.id ? (
-          <TouchableOpacity className="bg-black px-4 py-2 rounded-lg m-3" onPress={signOut}>
-            <Text className="text-white font-bold text-lg text-center">Sign Out</Text>
+      <View className={user?.id !== authUser?.id ? 'flex' : 'hidden'}>
+      {
+        myFollowing.filter((u: any) => u.follower_user_id === user?.id).length > 0 ? (
+          <TouchableOpacity className="absolute bottom-0 right-0 bg-red-600 rounded-full items-center justify-center m-5" onPress={unFollowerUser}>
+            <Ionicons name="remove" size={30} color="white" />
           </TouchableOpacity>
         ) : (
-          <View>
-            {
-              myFollowing.filter((u: any) => u.follower_user_id === user?.id).length > 0 ? (
-                <TouchableOpacity className="bg-red-400 px-4 py-2 rounded-lg w-full m-3" onPress={unFollowerUser}>
-                  <Text className="text-white font-bold text-lg text-center">Unfollow</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity className="bg-red-400 px-4 py-2 rounded-lg w-full m-3" onPress={followerUser}>
-                  <Text className="text-white font-bold text-lg text-center">Follow</Text>
-                </TouchableOpacity>
-              )
-            }
-          </View>
+          <TouchableOpacity className="absolute bottom-0 right-0 bg-red-600 rounded-full items-center justify-center m-5" onPress={followerUser}>
+            <Ionicons name="add" size={30} color="white" />
+          </TouchableOpacity>
         )
       }
-      <FlatList
-        numColumns={3}
-        data={videos}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        renderItem={({ item }) => 
+      </View>
+      { videos?.length > 0 && (
+        <TouchableOpacity className="pt-10 flex-1 items-center justify-center" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
           <Video
             ref={videoRef}
             style={{ 
-              width: Dimensions.get('window').width*.333,
-              height: 225
+              flex: 1,
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+              borderRadius: 15,
             }}
-            source={{ uri: item.signedUrl }}
+            source={{ uri: videos[0]?.signedUrl }}
             resizeMode={ResizeMode.COVER}
+            isLooping
           />
-        } 
-
-      />
-    </SafeAreaView>
+          <View className="absolute items-center justify-center bg-black/50 w-full h-full">
+            <View className="bg-black py-3 px-6 rounded-lg">
+              <Text className="text-white text-xl font-bold">View More</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }

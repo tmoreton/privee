@@ -1,6 +1,7 @@
 import React from 'react';
 import { supabase } from '@/utils/supabase';
 import { useRouter } from 'expo-router';
+import { Alert } from 'react-native';
 
 export const AuthContext = React.createContext({
   user: null,
@@ -15,6 +16,7 @@ export const AuthContext = React.createContext({
   getFollowers: async (userId: string) => {},
   friends: [],
   getFriends: async () => {},
+  deleteAccount: async () => {},
 });
 
 export const useAuth = () => React.useContext(AuthContext)
@@ -48,20 +50,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const getFollowing = async (userId: string) => {
     if(!userId) return
 
-    const { data, error } = await supabase.from('Follower').select('*').eq('user_id', userId);
+    const { data, error } = await supabase
+      .from('Follower')
+      .select(`*, following:User!follower_user_id(*)`)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(10)
     if(!error) setFollowing(data)
   }
 
   const getFollowers = async (userId: string) => {
     if(!userId) return
 
-    const { data, error } = await supabase.from('Follower').select('*, User(*)').eq('follower_user_id', userId);
+    const { data, error } = await supabase
+      .from('Follower')
+      .select(`*, follower:User!user_id(*)`)
+      .eq('follower_user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(10)
     if(!error) setFollowers(data)
   }
 
   const getUser = async (id: string) => {
     const { data, error } = await supabase.from('User').select('*').eq('id', id).single();
-    if(error) return console.error(error);
+    if(error) {
+      await supabase.auth.signOut();
+      return Alert.alert("User not found")
+    };
 
     setUser(data);
     getLikes(data.id)
@@ -75,7 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       email: email,
       password: password,
     });
-    if(error) return console.error(error);
+    if(error) return Alert.alert(error.message);
     getUser(data.user.id);
   };
 
@@ -84,25 +99,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       email: email,
       password: password,
     });
-    if(error) return console.error(error);
+    if(error) return Alert.alert(error.message);
 
-    const { error: userError } = await supabase.from('User').insert({
-      id: data?.user?.id,
-      username: username,
-      email: email,
-    });
+    const { data: userData, error: userError } = await supabase
+      .from('User')
+      .upsert({
+        id: data?.user?.id,
+        username: username,
+        email: email,
+      })
+      .select();
     if(userError) return console.error(userError);
-    getUser(data?.user?.id);
+    setUser(userData[0]);
     router.back()
     router.push('/(tabs)');
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if(error) return console.error(error);
+    await supabase.auth.signOut();
     setUser(null);
-    router.push('/(auth)');
+    router.back()
+    router.replace('/(auth)');
   };
+
+  const deleteAccount = async () => {
+    if(!user) return
+
+    const { error } = await supabase.from('User').delete().eq('id', user?.id);
+    if(error) return console.error(error);
+
+    signOut()
+  }
 
   React.useEffect(() => {
     const { data: authData } = supabase.auth.onAuthStateChange((event, session) => {
@@ -127,7 +154,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     followers, 
     getFollowers,
     friends,
-    getFriends
+    getFriends,
+    deleteAccount
   }}>
     {children}
   </AuthContext.Provider>

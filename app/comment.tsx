@@ -18,6 +18,7 @@ export default function () {
       .from('Comment')
       .select('*, User(*)')
       .eq('video_id', params.video_id)
+      .order('created_at', { ascending: false })
     if(error) return console.log(error)
     setComments(data)
   }
@@ -33,5 +34,5 @@ export default function () {
     getComments()
   }
 
-  return <Messages messages={comments} addMessage={addComment} />
+  return <Messages messages={comments} addMessage={addComment} video_id={params.video_id} />
 }

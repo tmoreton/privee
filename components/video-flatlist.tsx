@@ -1,28 +1,27 @@
 import React from 'react';
-import { View, FlatList, Dimensions, Text, SafeAreaView } from 'react-native';
+import { View, FlatList, Dimensions, SafeAreaView, Text } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import VideoPlayer from '@/components/video';
-import Header from '@/components/header';
-import { useAuth } from '@/providers/AuthProvider';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function () {
-  const { friends, following } = useAuth();
+export default function ({ ids }: { ids: string[] }) {
   const [videos, setVideos] = React.useState<any[]>([]);
   const [ activeIndex, setActiveIndex ] = React.useState<number | null>(null)
   const isFocused = useIsFocused()
 
   React.useEffect(() => {
     getVideos()
-  }, [])
+  }, [ids])
 
   const getVideos = async () => {
     const { data, error } = await supabase
       .from('Video')
       .select('*, User(*)')
-      .in('user_id', friends)
+      .in('user_id', ids)
       .order('created_at', { ascending: false })
+    if(error) return console.log(error)
+      
     getSignedUrls(data)
   }
 
@@ -37,11 +36,9 @@ export default function () {
       })
       setVideos(videosUrls)
   }
+
   return (
     <View className="flex-1 items-center justify-center bg-black">
-      <View className="absolute top-16 left-0 right-0 z-10">
-        <Header title="Friends" color="white" search />
-      </View>
       <FlatList 
         data={videos} 
         snapToInterval={Dimensions.get('window').height}
@@ -50,8 +47,8 @@ export default function () {
         onViewableItemsChanged={e => setActiveIndex(e.viewableItems[0].key)}
         renderItem={({ item }) => <VideoPlayer video={item} isViewable={activeIndex === item.id && isFocused}/>} 
         ListEmptyComponent={
-          <SafeAreaView className="flex-1 mt-48 items-center justify-center bg-black">
-            <Ionicons name='sad' size={20} color='white' />
+          <SafeAreaView className="flex-1 items-center justify-center bg-black h-screen">
+            <Ionicons name='sad' size={50} color='white' />
             <Text className="text-white text-2xl font-bold">No Friends Yet</Text>
           </SafeAreaView>
         }

@@ -1,24 +1,29 @@
 import React from 'react';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import { Alert, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { supabase } from '@/utils/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { Video, ResizeMode } from 'expo-av';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function App() {
-  const [facing, setFacing] = useState<CameraType>('back');
+  const [facing, setFacing] = React.useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [isRecording, setIsRecording] = useState(false);
+  const [isRecording, setIsRecording] = React.useState(false);
   const cameraRef = React.useRef<CameraView>(null);
   const videoRef = React.useRef<Video>(null);
-  const [videoUri, setVideoUri] = useState<string | null>(null);
+  const [videoUri, setVideoUri] = React.useState<string | null>(null);
   const { user } = useAuth();
   const router = useRouter();
-  const [status, setStatus] = useState({ isLoaded: false, isPlaying: false });
+  const [status, setStatus] = React.useState({ isLoaded: false, isPlaying: false });
+  const isFocused = useIsFocused()
+
+  React.useEffect(() => {
+    if(!isFocused) setVideoUri(null);
+  }, [isFocused])
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -28,9 +33,15 @@ export default function App() {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View className="flex-1 justify-center items-center">
-        <Text>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View className="flex-1 justify-center items-center bg-black">
+        <Text className="text-white font-bold text-xl text-center w-2/3">We need your permission to show the camera</Text>
+        <TouchableOpacity
+          className="flex-row items-center justify-center bg-white p-3 px-6 rounded-lg my-4"
+          onPress={requestPermission}
+        >
+          <Ionicons name="camera" size={24} color="black" />
+          <Text className="ml-3 text-black font-bold text-lg text-center">Access Camera</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -47,6 +58,7 @@ export default function App() {
       setIsRecording(true);
       const video = await cameraRef.current?.recordAsync();
       setVideoUri(video.uri);
+      videoRef.current?.playAsync()
     }
   }
 
@@ -59,32 +71,33 @@ export default function App() {
       name: fileName
     });
 
+    router.back();
     const { data, error } = await supabase.storage
       .from(`videos/${user?.id}`)
       .upload(fileName, formData, {
         cacheControl: '3600000000',
         upsert: false
       });
-    if(error) console.error(error);
+    if(error) Alert.alert(error.message);
 
     const { error: videoError } = await supabase.from('Video').insert({
       title: "Test title here!",
       uri: `${user?.id}/${fileName}`,
       user_id: user?.id
     });
-    if(videoError) console.error(videoError);
-    router.back();
+    if(videoError) Alert.alert(videoError.message);
   }
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
+  const pickVideo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 0.1,
     });
-    setVideoUri(result.assets[0].uri);
+    if(!result?.assets) return setVideoUri(null);
+    setVideoUri(result?.assets?.[0]?.uri);
+    videoRef.current?.playAsync()
   };
 
   return (
@@ -94,7 +107,7 @@ export default function App() {
           <TouchableOpacity className="absolute bottom-10 left-36 z-10" onPress={saveVideo}>
             <Ionicons name="checkmark-circle" size={100} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity className="flex-1" onPress={() => status.isPlaying ? videoRef.current.pauseAsync() : videoRef.current.playAsync()}>
+          <TouchableOpacity className="flex-1" onPress={() => status.isPlaying ? videoRef.current?.pauseAsync() : videoRef.current?.playAsync()}>
             <Video
               ref={videoRef}
               style={{ 
@@ -114,9 +127,9 @@ export default function App() {
       )
       :
       <CameraView mode="video" ref={cameraRef} style={{ flex: 1 }} facing={facing}>
-        <View className="flex-1 justify-end">
-          <View className="flex-row items-center justify-around mb-10">
-            <TouchableOpacity className="items-end justify-end" onPress={pickImage}>
+        <View className="absolute bottom-16 left-0 right-0 z-20">
+          <View className="flex-row items-center justify-around">
+            <TouchableOpacity className="items-end justify-end" onPress={pickVideo}>
               <Ionicons name="aperture" size={50} color="white" />
             </TouchableOpacity>
             {videoUri ? (
