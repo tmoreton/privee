@@ -20,6 +20,8 @@ export default function ({ ids }: { ids: string[] }) {
       .select('*, User(*)')
       .in('user_id', ids)
       .order('created_at', { ascending: false })
+    if(error) return console.log(error)
+      
     getSignedUrls(data)
   }
 

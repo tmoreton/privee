@@ -13,14 +13,26 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
   const videoRef = React.useRef<Video>(null);
   const router = useRouter();
   const path = usePathname();
+  const [comment, setComment] = React.useState<any>(null)
 
   React.useEffect(() => {
     if (isViewable) {
       videoRef.current?.playAsync()
+      getComment()
     } else {
       videoRef.current?.pauseAsync()
     }
   }, [isViewable])
+
+  const getComment = async () => {
+    const { data, error } = await supabase
+      .from('Comment')
+      .select('*, User(*)')
+      .eq('video_id', video.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+    if(!error) setComment(data[0])
+  }
 
   const shareVideo = () => {
     Share.share({
@@ -170,12 +182,29 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
             </View>
           </View>
           {
-            path === '/profile' && 
-            <View className="flex-row items-center justify-end mx-6">
-              <TouchableOpacity onPress={createAlert}>
+            path === '/profile' && (
+              <View className="flex-row items-center justify-end mx-6">
+                <TouchableOpacity onPress={createAlert}>
                 <Ionicons name="settings" size={40} color="white" />
+                </TouchableOpacity>
+              </View>
+            )
+          }
+          {
+            path !== '/profile' && comment && (
+              <TouchableOpacity onPress={() => router.push(`/comment?video_id=${video.id}&video_user_id=${comment.User.id}`)}>
+                <View className='flex-row gap-2 items-center m-3 bg-black/50 px-2 pb-2 rounded-xl'>
+                  <Image 
+                    source={{ uri: `${process.env.EXPO_PUBLIC__BUCKET}/avatars/${comment.User?.id}/avatar.jpg` }} 
+                    className="w-10 h-10 rounded-full bg-black"
+                  />
+                  <View>
+                    <Text className='font-bold text-base text-white'>{comment.User?.username}</Text>
+                    <Text className='text-white'>{comment?.text}</Text>
+                  </View>
+                </View>
               </TouchableOpacity>
-            </View>
+            )
           }
         </View>
       </View>
