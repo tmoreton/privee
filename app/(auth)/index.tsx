@@ -14,8 +14,9 @@ export default function () {
       <View className="w-full p-4">
         <Image
           source={require('@/assets/images/icon.png')}
-          className="w-72 h-40 mx-auto"
+          className="w-72 h-32 mx-auto"
         />
+        <Text className="text-white text-base text-center -mt-5 mb-5 italic">Share Freely, Stay Private.</Text>
         <TextInput
           placeholder="Email"
           placeholderTextColor="gray"

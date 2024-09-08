@@ -16,9 +16,9 @@ export default function () {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <View className="w-full p-4">
-        <View className="flex-row justify-between">
+        <View className="flex-row justify-between absolute top-0 left-0 right-0">
           <View className="w-1/2"></View>
-          <TouchableOpacity className="p-2" onPress={() => router.back()}>
+          <TouchableOpacity className="p-3" onPress={() => router.back()}>
             <Feather name="x" size={32} color="white" />
           </TouchableOpacity>
         </View>
@@ -26,6 +26,7 @@ export default function () {
           source={require('@/assets/images/icon.png')}
           className="w-72 h-20 mx-auto mb-5"
         />
+        <Text className="text-white text-base text-center -mt-5 mb-5 italic">Share Freely, Stay Private.</Text>
         <TextInput
           placeholder="Username"
           autoCapitalize="none"
