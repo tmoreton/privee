@@ -50,6 +50,12 @@ export default function App() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  React.useEffect(() => {
+    if(videoUri) {
+      videoRef.current?.playAsync()
+    }
+  }, [videoUri])
+
   const recordVideo = async () => {
     if (isRecording) {
       setIsRecording(false);
@@ -57,8 +63,7 @@ export default function App() {
     } else {
       setIsRecording(true);
       const video = await cameraRef.current?.recordAsync();
-      setVideoUri(video.uri);
-      videoRef.current?.playAsync()
+      setVideoUri(video?.uri);
     }
   }
 
@@ -70,7 +75,7 @@ export default function App() {
       type: `video/${fileName?.split('.').pop()}`,
       name: fileName
     });
-
+    router.back();
     const { data, error } = await supabase.storage
       .from(`videos/${user?.id}`)
       .upload(fileName, formData, {
@@ -85,7 +90,6 @@ export default function App() {
       user_id: user?.id
     });
     if(videoError) Alert.alert(videoError.message);
-    router.back();
   }
 
   const pickVideo = async () => {

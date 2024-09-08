@@ -102,14 +102,9 @@ const registerForPushNotificationsAsync = async (userId: string) => {
             value={enableNotifications}
           />
         </View>
-        <View className="m-3 flex-row items-center justify-between">
-          <View className="flex-row items-center">
-            <Ionicons name="person" size={22} color="white" />
-            <Text className="text-white font-semibold text-lg ml-5">
-              Delete Account
-            </Text>
-          </View>
-          <TouchableOpacity onPress={() => {
+        <TouchableOpacity 
+          className="m-3 flex-row items-center justify-between"
+          onPress={() => {
             Alert.alert('Delete Account', 'Are you sure you want to delete your account?', [
               {
                 text: 'Cancel',
@@ -119,20 +114,23 @@ const registerForPushNotificationsAsync = async (userId: string) => {
               {text: 'OK', onPress: deleteAccount},
             ]);
           }}>
-            <FontAwesome name="chevron-right" size={22} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View className="m-3 flex-row items-center justify-between">
+          <View className="flex-row items-center">
+            <Ionicons name="person" size={22} color="white" />
+            <Text className="text-white font-semibold text-lg ml-5">
+              Delete Account
+            </Text>
+          </View>
+          <FontAwesome name="chevron-right" size={22} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={signOut} className="m-3 flex-row items-center justify-between">
           <View className="flex-row items-center">
             <MaterialIcons name="logout" size={28} color="white" />
             <Text className="text-white font-semibold text-lg ml-5">
               Log out
             </Text>
           </View>
-          <TouchableOpacity onPress={signOut}>
-            <FontAwesome name="chevron-right" size={22} color="white" />
-          </TouchableOpacity>
-        </View>
+          <FontAwesome name="chevron-right" size={22} color="white" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
