@@ -3,9 +3,12 @@ import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Device from 'expo-device';
 
 export default function TabLayout() {
   const router = useRouter();
+  const isTablet = Device.DeviceType.TABLET === 2
+
   return (
     <Tabs
       screenOptions={{
@@ -35,15 +38,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Friends',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "people-sharp" : "people-outline"} size={35} color="#fff" />,
+          title: '',
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "people-sharp" : "people-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
-          title: 'Search',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={35} color="#fff" />,
+          title: '',
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
         }}
       />
       <Tabs.Screen
@@ -52,7 +55,7 @@ export default function TabLayout() {
           title: '',
           tabBarIcon: () => 
           <View className="absolute">
-            <Ionicons name="add-circle" size={75} color="#fff" />
+            <Ionicons name="add-circle" size={75} color="#fff"  style={{ height: 75, width: 75 }}/>
           </View>,
         }}
         listeners={{
@@ -65,15 +68,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="inbox"
         options={{
-          title: 'Inbox',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "chatbox-ellipses" : "chatbox-ellipses-outline"} size={35} color="#fff" />
+          title: '',
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "chatbox-ellipses" : "chatbox-ellipses-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={35} color="#fff" />,
+          title: '',
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
         }}
       />
     </Tabs>
