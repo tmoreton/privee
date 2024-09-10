@@ -27,9 +27,9 @@ export default function () {
   return (
     <SafeAreaView className='flex-1 bg-black'>
       <Header title="Search" color="white" />
-      <View className='flex-row gap-2 mt-5 mx-2'>
+      <View className='flex-row gap-2 m-2 items-center'>
         <TextInput
-          className="flex-1 text-white p-4 mb-3 rounded-xl bg-zinc-800"
+          className="flex-1 text-white p-4 rounded-xl bg-zinc-800"
           placeholder="Search"
           placeholderTextColor='white'
           autoCapitalize='none'
@@ -37,7 +37,7 @@ export default function () {
           value={text}
         />
         <TouchableOpacity onPress={search}>
-          <Ionicons name="arrow-forward-circle" size={60} color="white" />
+          <Ionicons name="arrow-forward-circle" size={40} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList

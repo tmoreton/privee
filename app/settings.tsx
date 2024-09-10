@@ -90,7 +90,7 @@ const registerForPushNotificationsAsync = async (userId: string) => {
         <View className="m-3 flex-row items-center justify-between mt-5">
           <View className="flex-row items-center">
             <FontAwesome name="bell" size={22} color="white" />
-            <Text className="text-white font-semibold text-lg ml-5">
+            <Text className="text-white font-semibold text-base ml-5">
               Allow Notifications
             </Text>
           </View>
@@ -116,20 +116,20 @@ const registerForPushNotificationsAsync = async (userId: string) => {
           }}>
           <View className="flex-row items-center">
             <Ionicons name="person" size={22} color="white" />
-            <Text className="text-white font-semibold text-lg ml-5">
+            <Text className="text-white font-semibold text-base ml-5">
               Delete Account
             </Text>
           </View>
-          <FontAwesome name="chevron-right" size={22} color="white" />
+          <Ionicons name="chevron-forward" size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity onPress={signOut} className="m-3 flex-row items-center justify-between">
           <View className="flex-row items-center">
             <MaterialIcons name="logout" size={28} color="white" />
-            <Text className="text-white font-semibold text-lg ml-5">
+            <Text className="text-white font-semibold text-base ml-5">
               Log out
             </Text>
           </View>
-          <FontAwesome name="chevron-right" size={22} color="white" />
+          <Ionicons name="chevron-forward" size={20} color="white" />
         </TouchableOpacity>
       </View>
     </SafeAreaView>

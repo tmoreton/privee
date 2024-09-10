@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Text, View, TextInput, TouchableOpacity, FlatList, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { supabase } from '@/utils/supabase';
 
@@ -29,7 +29,7 @@ export default function ({
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex-1 items-center justify-center bg-black">
-          <View className="flex-row items-center justify-between mx-3">
+          <View className="flex-row items-center justify-between mx-2">
             <View className="w-10">
               <TouchableOpacity onPress={() => {
                 Alert.alert('Report', 'Are you sure you want to report this content?', [
@@ -37,13 +37,13 @@ export default function ({
                   { text: 'Report', onPress: report }
                 ])
               }}>
-                <Ionicons name="flag" size={26} color="white" />
+                <Ionicons name="flag" size={20} color="white" />
               </TouchableOpacity>
             </View>
-            <Text className="text-white font-bold text-2xl flex-1 text-center">Messages</Text>
+            <Text className="text-white font-bold text-xl flex-1 text-center">Messages</Text>
             <View className="w-10">
               <TouchableOpacity onPress={() => router.back()}>
-                <FontAwesome name="remove" size={32} color="white" />
+                <MaterialIcons name="highlight-remove" size={28} color="white" />
               </TouchableOpacity>
             </View>
           </View>
@@ -66,9 +66,9 @@ export default function ({
             }
           }
           />
-          <View className='flex-row gap-2 w-full mx-3 mb-16'>
+          <View className='flex-row gap-2 w-full mx-3 mb-16 items-center'>
             <TextInput
-              className="flex-1 bg-zinc-800 p-4 rounded-xl text-white text-base"
+              className="flex-1 bg-zinc-800 p-4 rounded-xl text-white"
               placeholder="Add a comment"
               placeholderTextColor="white"
               onChangeText={(i) => setText(i)}
@@ -79,10 +79,10 @@ export default function ({
               Keyboard.dismiss()
               addMessage(text)
             }}>
-              <Ionicons name="arrow-forward-circle" size={60} color="white" />
+              <Ionicons name="arrow-forward-circle" size={40} color="white" />
             </TouchableOpacity>
-            </View>
           </View>
+        </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

@@ -23,20 +23,20 @@ export default function Header({
       <View className="w-10">
         {goBack && (
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={32} color={color} />
+            <Ionicons name="chevron-back" size={25} color={color} />
           </TouchableOpacity>
         )}
       </View>
-      <Text className={`text-${color} font-bold text-2xl flex-1 text-center`}>{title}</Text>
+      <Text className={`text-${color} font-bold text-xl flex-1 text-center`}>{title}</Text>
       <View className="w-10">
         {search && (
           <TouchableOpacity onPress={() => router.push('/search')}>
-            <Ionicons name="search" size={28} color={color} />
+            <Ionicons name="search" size={25} color={color} />
           </TouchableOpacity>
         )}
         { settings && (
           <TouchableOpacity onPress={() => router.push('/settings')}>
-            <Ionicons name="settings" size={28} color={color} />
+            <Ionicons name="settings" size={25} color={color} />
           </TouchableOpacity>
         )}
       </View>

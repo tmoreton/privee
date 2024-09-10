@@ -143,7 +143,7 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
         <View className="flex-1 justify-between">
           <View className={`flex-row items-center justify-between mt-14 mx-4 ${path === '/profile' ? 'mt-0' : 'mt-14'}`}>
             <TouchableOpacity onPress={() => router.push(`/comment?video_id=${video.id}&video_user_id=${video.User.id}`)}>
-              <Ionicons name="chatbubble-ellipses" size={40} color="white" />
+              <Ionicons name="chatbubble-ellipses" size={30} color="white" />
             </TouchableOpacity>
             <View className="flex-row items-center">
               <View>
@@ -156,27 +156,27 @@ export default function ({ video, isViewable }: { video: any, isViewable: boolea
                 {
                   following.filter((following: any) => following.follower_user_id === video.User.id).length > 0 ? (
                     <TouchableOpacity className="absolute -bottom-1 -right-1 bg-red-600 rounded-full items-center justify-center" onPress={unFollowerUser}>
-                      <Ionicons name="remove" size={21} color="white" />
+                      <Ionicons name="remove" size={18} color="white" />
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity className="absolute -bottom-1 -right-1 bg-red-600 rounded-full items-center justify-center" onPress={followerUser}>
-                      <Ionicons name="add" size={21} color="white" />
+                      <Ionicons name="add" size={18} color="white" />
                     </TouchableOpacity>
                   )
                 }
               </View>
               <TouchableOpacity onPress={() => router.push(`/user?user_id=${video.User.id}`)}>
-                <Text className="text-white text-2xl font-bold ml-3">{video.User.username}</Text>
+                <Text className="text-white text-xl font-bold ml-3">{video.User.username}</Text>
               </TouchableOpacity>
             </View>
             <View>
               {likes.filter((like: any) => like.video_id === video.id).length > 0 ? (
                 <TouchableOpacity onPress={unLikeVideo}>
-                  <Ionicons name="heart" size={40} color="white" />
+                  <Ionicons name="heart" size={30} color="white" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity onPress={likeVideo}>
-                  <Ionicons name="heart-outline" size={40} color="white" />
+                  <Ionicons name="heart-outline" size={30} color="white" />
                 </TouchableOpacity>
               )}
             </View>

@@ -31,13 +31,13 @@ export default function () {
 
   return (
     <SafeAreaView className="flex-1 bg-black">
-      <View className="flex-row items-center justify-between mx-3">
+      <View className="flex-row items-center justify-between mx-2">
         <View className="w-10">
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={32} color="white" />
+            <Ionicons name="chevron-back" size={25} color="white" />
           </TouchableOpacity>
         </View>
-        <Text className={`text-white font-bold text-2xl flex-1 text-center`}>{user?.username}</Text>
+        <Text className={`text-white font-bold text-xl flex-1 text-center`}>{user?.username}</Text>
         <View className="w-10">
           <TouchableOpacity onPress={() => {
             Alert.alert('Report', 'Are you sure you want to report this user?', [
@@ -45,7 +45,7 @@ export default function () {
               { text: 'Report', onPress: report }
             ])
           }}>
-            <Ionicons name="flag" size={26} color="white" />
+            <Ionicons name="flag" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </View>

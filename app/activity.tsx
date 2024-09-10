@@ -47,8 +47,8 @@ export default function () {
               className="w-12 h-12 rounded-full bg-black m-2"
             />
             <View>
-              <Text className='font-bold text-md text-white'>{item.User.username}</Text>
-              <Text className='text-white leading-7'>{item.text || 'Liked your video'}</Text>
+              <Text className='font-bold text-sm text-white'>{item.User.username}</Text>
+              <Text className='text-white max-w-[300px] my-1'>{item.text || 'Liked your video'}</Text>
               <Text className='text-xs text-gray-400'>
               { new Date(item?.created_at).toLocaleTimeString(undefined, {
                 hour: 'numeric',

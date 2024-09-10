@@ -39,14 +39,14 @@ export default function TabLayout() {
         name="index"
         options={{
           title: '',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "people-sharp" : "people-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "people-sharp" : "people-outline"} size={30} color="#fff" style={{ height: 30, width: 30 }} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: '',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={30} color="#fff" style={{ height: 30, width: 30 }} />,
         }}
       />
       <Tabs.Screen
@@ -55,7 +55,7 @@ export default function TabLayout() {
           title: '',
           tabBarIcon: () => 
           <View className="absolute">
-            <Ionicons name="add-circle" size={75} color="#fff"  style={{ height: 75, width: 75 }}/>
+            <Ionicons name="add-circle" size={55} color="#fff"  style={{ height: 55, width: 55 }}/>
           </View>,
         }}
         listeners={{
@@ -69,14 +69,14 @@ export default function TabLayout() {
         name="inbox"
         options={{
           title: '',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "chatbox-ellipses" : "chatbox-ellipses-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "chatbox-ellipses" : "chatbox-ellipses-outline"} size={30} color="#fff" style={{ height: 30, width: 30 }} />
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: '',
-          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={35} color="#fff" style={{ height: 35, width: 35 }} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={30} color="#fff" style={{ height: 30, width: 30 }} />,
         }}
       />
     </Tabs>
