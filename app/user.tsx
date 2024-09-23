@@ -26,7 +26,7 @@ export default function () {
       user_id: user?.id,
     })
     if(error) return console.error(error);
-    Alert.alert('Reported', 'The user has been reported to the moderators');
+    Alert.alert('Blocked', 'This user has been blocked');
   }
 
   return (
@@ -40,9 +40,9 @@ export default function () {
         <Text className={`text-white font-bold text-xl flex-1 text-center`}>{user?.username}</Text>
         <View className="w-10">
           <TouchableOpacity onPress={() => {
-            Alert.alert('Report', 'Are you sure you want to report this user?', [
+            Alert.alert('Block User', 'Please confirm abusive behavior from this user', [
               { text: 'Cancel', style: 'cancel' },
-              { text: 'Report', onPress: report }
+              { text: 'Block', onPress: report }
             ])
           }}>
             <Ionicons name="flag" size={20} color="white" />

@@ -122,7 +122,7 @@ export default function ({
       }
       </View>
       { videos?.length > 0 && (
-        <TouchableOpacity className="pt-10 flex-1 items-center justify-center" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
+        <TouchableOpacity className="mt-10 flex-1 items-center justify-center" onPress={() => router.push(`/view?user_id=${user?.id}`)}>
           <Video
             ref={videoRef}
             style={{ 

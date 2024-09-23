@@ -28,7 +28,7 @@ export default function ({
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 items-center justify-center bg-black">
+        <View className="flex-1 items-center justify-center bg-black pt-5">
           <View className="flex-row items-center justify-between mx-2">
             <View className="w-10">
               <TouchableOpacity onPress={() => {
@@ -43,7 +43,7 @@ export default function ({
             <Text className="text-white font-bold text-xl flex-1 text-center">Messages</Text>
             <View className="w-10">
               <TouchableOpacity onPress={() => router.back()}>
-                <MaterialIcons name="highlight-remove" size={28} color="white" />
+                <Ionicons name="close" size={30} color="white" />
               </TouchableOpacity>
             </View>
           </View>
